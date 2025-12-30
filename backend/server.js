@@ -19,6 +19,7 @@ import problemsRoutes from './routes/problems.js';
 import submissionsRoutes from './routes/submissions.js';
 import contestsRoutes from './routes/contests.js';
 import notificationsRoutes from './routes/notifications.js';
+import teacherRoutes from './routes/teacher.js';
 
 // Load environment variables
 dotenv.config();
@@ -66,6 +67,7 @@ app.use('/api/problems', problemsRoutes);
 app.use('/api/submissions', submissionsRoutes);
 app.use('/api/contests', contestsRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api/teacher', teacherRoutes);
 
 // Error handling
 app.use(notFound);

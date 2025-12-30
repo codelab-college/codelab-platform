@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+const ProtectedRoute = ({ children, requiredRole }) => {
+  const { user, isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (
@@ -13,7 +13,14 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    // Redirect to appropriate login based on required role
+    return <Navigate to={requiredRole === 'teacher' ? '/teacher/login' : '/login'} replace />;
+  }
+
+  // Check role if specified
+  if (requiredRole && user?.role !== requiredRole) {
+    // Redirect teacher to teacher portal, student to student portal
+    return <Navigate to={user?.role === 'teacher' ? '/teacher' : '/'} replace />;
   }
 
   return children;

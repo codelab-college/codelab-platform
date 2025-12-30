@@ -8,6 +8,7 @@ router.get('/', auth, studentOnly, async (req, res) => {
   try {
     const db = req.app.get('db');
     const studentId = req.user.id;
+    const studentUSN = req.user.usn;
 
     const assignments = await db.all(`
       SELECT 
@@ -19,6 +20,8 @@ router.get('/', auth, studentOnly, async (req, res) => {
         a.duration_minutes,
         a.total_marks,
         a.status,
+        a.access_type,
+        a.selected_students,
         u.name as teacher_name,
         COUNT(DISTINCT p.id) as problem_count,
         COALESCE(sa.status, 'not_started') as student_status,
@@ -29,10 +32,14 @@ router.get('/', auth, studentOnly, async (req, res) => {
       LEFT JOIN users u ON a.teacher_id = u.id
       LEFT JOIN problems p ON a.id = p.assignment_id
       LEFT JOIN student_assignments sa ON a.id = sa.assignment_id AND sa.student_id = ?
-      WHERE a.status = 'active'
+      WHERE a.status = 'active' AND a.is_hidden = 0
+        AND (
+          a.access_type = 'all' 
+          OR (a.access_type = 'selected' AND (',' || a.selected_students || ',') LIKE ('%,' || ? || ',%'))
+        )
       GROUP BY a.id
       ORDER BY a.due_date ASC
-    `, [studentId]);
+    `, [studentId, studentUSN]);
 
     res.json({ assignments });
   } catch (error) {

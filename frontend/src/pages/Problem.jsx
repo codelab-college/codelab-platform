@@ -121,7 +121,7 @@ const Problem = () => {
     };
   }, [isSecureMode]);
 
-  // Auto-save
+  // Auto-save code
   useEffect(() => {
     if (autoSaveTimer.current) {
       clearTimeout(autoSaveTimer.current);
@@ -142,6 +142,13 @@ const Problem = () => {
       }
     };
   }, [code, language, id]);
+
+  // Auto-save custom test input
+  useEffect(() => {
+    if (customInput !== undefined && customInput !== '') {
+      localStorage.setItem(`problem_${id}_customInput`, customInput);
+    }
+  }, [customInput, id]);
 
   const addViolation = (message) => {
     const newViolation = {
@@ -177,6 +184,7 @@ const Problem = () => {
 
       const savedCode = localStorage.getItem(`problem_${id}_code`);
       const savedLanguage = localStorage.getItem(`problem_${id}_language`);
+      const savedCustomInput = localStorage.getItem(`problem_${id}_customInput`);
       
       if (savedCode) {
         setCode(savedCode);
@@ -185,7 +193,10 @@ const Problem = () => {
         setLanguage(savedLanguage);
       }
       
-      if (response.data.sampleTests.length > 0) {
+      // Load saved custom input or default to first sample test input
+      if (savedCustomInput) {
+        setCustomInput(savedCustomInput);
+      } else if (response.data.sampleTests.length > 0) {
         setCustomInput(response.data.sampleTests[0].input);
       }
     } catch (error) {
