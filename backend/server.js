@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 
 import Database from './database/Database.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
+import { executeCode } from './services/codeExecutor.js';
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -20,6 +21,9 @@ import submissionsRoutes from './routes/submissions.js';
 import contestsRoutes from './routes/contests.js';
 import notificationsRoutes from './routes/notifications.js';
 import teacherRoutes from './routes/teacher.js';
+import adminRoutes from './routes/admin.js';
+import practiceRoutes from './routes/practice.js';
+import badgesRoutes from './routes/badges.js';
 
 // Load environment variables
 dotenv.config();
@@ -34,6 +38,10 @@ const PORT = process.env.PORT || 5000;
 const dbPath = process.env.DB_PATH || path.join(__dirname, 'database/codelab.db');
 const db = new Database(dbPath);
 app.set('db', db);
+
+// Code executor
+const codeExecutor = { execute: executeCode };
+app.set('codeExecutor', codeExecutor);
 
 // Initialize database
 await db.initialize();
@@ -68,6 +76,9 @@ app.use('/api/submissions', submissionsRoutes);
 app.use('/api/contests', contestsRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/teacher', teacherRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/practice', practiceRoutes);
+app.use('/api/badges', badgesRoutes);
 
 // Error handling
 app.use(notFound);

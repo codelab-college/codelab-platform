@@ -12,6 +12,10 @@ import AssignmentDetail from './pages/AssignmentDetail';
 import Problem from './pages/Problem';
 import Submissions from './pages/Submissions';
 import SubmissionDetail from './pages/SubmissionDetail';
+import Practice from './pages/Practice';
+import PracticeProblem from './pages/PracticeProblem';
+import Badges from './pages/Badges';
+import Leaderboard from './pages/Leaderboard';
 
 // Teacher Pages
 import TeacherLogin from './pages/teacher/TeacherLogin';
@@ -23,6 +27,16 @@ import TeacherAssignmentDetail from './pages/teacher/AssignmentDetail';
 import AssignmentSubmissions from './pages/teacher/AssignmentSubmissions';
 import StudentSearch from './pages/teacher/StudentSearch';
 import Layout from './components/Layout';
+
+// Admin Pages
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './components/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import TeacherManagement from './pages/admin/TeacherManagement';
+import StudentManagement from './pages/admin/StudentManagement';
+import Reports from './pages/admin/Reports';
+import PlagiarismChecker from './pages/admin/PlagiarismChecker';
+import Settings from './pages/admin/Settings';
 
 function App() {
   return (
@@ -126,6 +140,69 @@ function App() {
               }
             />
 
+            {/* Admin routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminLayout>
+                    <AdminDashboard />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/teachers"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminLayout>
+                    <TeacherManagement />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/students"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminLayout>
+                    <StudentManagement />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminLayout>
+                    <Reports />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/plagiarism"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminLayout>
+                    <PlagiarismChecker />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/settings"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminLayout>
+                    <Settings />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+
             {/* Student protected routes */}
             <Route
               path="/"
@@ -176,6 +253,30 @@ function App() {
               }
             />
             <Route
+              path="/practice"
+              element={
+                <ProtectedRoute>
+                  <Practice />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/practice/:id"
+              element={
+                <ProtectedRoute>
+                  <PracticeProblem />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/badges"
+              element={
+                <ProtectedRoute>
+                  <Badges />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/contests"
               element={
                 <ProtectedRoute>
@@ -199,8 +300,16 @@ function App() {
               path="/contests/:id/leaderboard"
               element={
                 <ProtectedRoute>
+                  <Leaderboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
                   <Layout>
-                    <UnderDevelopment feature="Contest Leaderboard" />
+                    <UnderDevelopment feature="Student Settings" />
                   </Layout>
                 </ProtectedRoute>
               }

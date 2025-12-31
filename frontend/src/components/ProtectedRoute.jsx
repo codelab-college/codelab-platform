@@ -6,21 +6,29 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffa116]"></div>
       </div>
     );
   }
 
   if (!isAuthenticated) {
     // Redirect to appropriate login based on required role
+    if (requiredRole === 'admin') {
+      return <Navigate to="/admin/login" replace />;
+    }
     return <Navigate to={requiredRole === 'teacher' ? '/teacher/login' : '/login'} replace />;
   }
 
   // Check role if specified
   if (requiredRole && user?.role !== requiredRole) {
-    // Redirect teacher to teacher portal, student to student portal
-    return <Navigate to={user?.role === 'teacher' ? '/teacher' : '/'} replace />;
+    // Redirect to appropriate portal based on user role
+    if (user?.role === 'admin') {
+      return <Navigate to="/admin" replace />;
+    } else if (user?.role === 'teacher') {
+      return <Navigate to="/teacher" replace />;
+    }
+    return <Navigate to="/" replace />;
   }
 
   return children;

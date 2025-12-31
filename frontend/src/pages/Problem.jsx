@@ -211,12 +211,8 @@ const Problem = () => {
     setShowEnvironmentCheck(false);
     setIsSecureMode(true);
     
-    // Enter fullscreen
-    try {
-      await document.documentElement.requestFullscreen();
-    } catch (err) {
-      console.error('Fullscreen failed:', err);
-    }
+    // Note: fullscreen request is handled by the EnvironmentCheck button click
+    // which is a user gesture, so we don't need to request it here
   };
 
   const handleCancelEnvironmentCheck = () => {

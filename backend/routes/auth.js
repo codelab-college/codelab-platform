@@ -5,6 +5,9 @@ import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
 
+// Use a default secret for development (should be set in production)
+const JWT_SECRET = process.env.JWT_SECRET || 'codelab-secret-key-change-in-production';
+
 // Login
 router.post(
   '/login',
@@ -49,7 +52,7 @@ router.post(
           department: user.department,
           semester: user.semester
         },
-        process.env.JWT_SECRET,
+        JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
       );
 
@@ -80,7 +83,7 @@ router.get('/me', async (req, res) => {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const db = req.app.get('db');
 
     const user = await db.get(

@@ -48,7 +48,7 @@ router.get('/', auth, studentOnly, async (req, res) => {
       LIMIT 5
     `, []);
 
-    // Recent submissions
+    // Recent submissions (include practice submissions with assignment_id = 0)
     const recentSubmissions = await db.all(`
       SELECT 
         s.id,
@@ -56,10 +56,13 @@ router.get('/', auth, studentOnly, async (req, res) => {
         s.score,
         s.submitted_at,
         p.title as problem_title,
-        a.title as assignment_title
+        CASE 
+          WHEN s.assignment_id = 0 THEN 'Practice'
+          ELSE COALESCE(a.title, 'Unknown')
+        END as assignment_title
       FROM submissions s
       JOIN problems p ON s.problem_id = p.id
-      JOIN assignments a ON s.assignment_id = a.id
+      LEFT JOIN assignments a ON s.assignment_id = a.id AND s.assignment_id != 0
       WHERE s.student_id = ?
       ORDER BY s.submitted_at DESC
       LIMIT 10

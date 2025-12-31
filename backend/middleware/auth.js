@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
 
+// Use a default secret for development (should be set in production)
+const JWT_SECRET = process.env.JWT_SECRET || 'codelab-secret-key-change-in-production';
+
 export const auth = (req, res, next) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -8,7 +11,7 @@ export const auth = (req, res, next) => {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {

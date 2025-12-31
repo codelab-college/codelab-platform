@@ -4,6 +4,42 @@ import { executeCode } from '../services/codeExecutor.js';
 
 const router = express.Router();
 
+// Get all submissions for the current student
+router.get('/', auth, studentOnly, async (req, res) => {
+  try {
+    const db = req.app.get('db');
+    const studentId = req.user.id;
+
+    const submissions = await db.all(`
+      SELECT 
+        s.id,
+        s.problem_id,
+        s.assignment_id,
+        s.language,
+        s.verdict,
+        s.score,
+        s.execution_time,
+        s.test_cases_passed,
+        s.total_test_cases,
+        s.is_final,
+        s.submitted_at,
+        p.title as problem_title,
+        a.title as assignment_title
+      FROM submissions s
+      JOIN problems p ON s.problem_id = p.id
+      LEFT JOIN assignments a ON s.assignment_id = a.id
+      WHERE s.student_id = ?
+      ORDER BY s.submitted_at DESC
+      LIMIT 50
+    `, [studentId]);
+
+    res.json({ submissions });
+  } catch (error) {
+    console.error('Error fetching submissions:', error);
+    res.status(500).json({ error: 'Failed to fetch submissions' });
+  }
+});
+
 // Run code (visible tests only)
 router.post('/run', auth, studentOnly, async (req, res) => {
   try {

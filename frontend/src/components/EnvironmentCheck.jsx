@@ -88,6 +88,13 @@ const EnvironmentCheck = ({ problemId, problemTitle, onVerified, onCancel }) => 
   const handleStartExam = async () => {
     if (!allPassed) return;
     
+    // Request fullscreen on user gesture
+    try {
+      await document.documentElement.requestFullscreen();
+    } catch (err) {
+      console.error('Fullscreen request failed:', err);
+    }
+    
     // Pass the camera stream to the problem page
     onVerified(cameraStream);
   };

@@ -33,7 +33,9 @@ const Layout = ({ children }) => {
   const navigation = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'Assignments', href: '/assignments', icon: FileText },
-    { name: 'Contests', href: '/contests', icon: Trophy },
+    { name: 'Practice', href: '/practice', icon: Code2 },
+    { name: 'Badges', href: '/badges', icon: Trophy },
+    { name: 'Contests', href: '/contests', icon: BookOpen },
   ];
 
   const isActive = (href) => {
