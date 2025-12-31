@@ -81,6 +81,9 @@ async function fix() {
     await addColumnIfNotExists('assignments', 'allow_copy_paste', 'INTEGER DEFAULT 1');
     await addColumnIfNotExists('assignments', 'show_results', 'INTEGER DEFAULT 1');
     await addColumnIfNotExists('assignments', 'instructions', 'TEXT');
+    await addColumnIfNotExists('assignments', 'is_closed', 'INTEGER DEFAULT 0');
+    await addColumnIfNotExists('assignments', 'detect_violations', 'INTEGER DEFAULT 1');
+    await addColumnIfNotExists('assignments', 'allowed_languages', "TEXT DEFAULT 'python,javascript,cpp'");
     console.log('');
 
     // ==================== 3. PROBLEMS TABLE ====================

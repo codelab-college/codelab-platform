@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Shield, Lock, User } from 'lucide-react';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const AdminLogin = () => {
   const [usn, setUsn] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,12 +17,20 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      const result = await login(usn, password);
-      if (result.user.role !== 'admin') {
+      // Use dedicated admin login endpoint
+      const response = await axios.post('/api/admin/login', { usn, password });
+      const { token, user } = response.data;
+
+      if (user.role !== 'admin') {
         toast.error('Access denied. Admin only.');
         return;
       }
-      toast.success('Welcome, Admin!');
+
+      // Store token and user
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      toast.success(`Welcome, ${user.name}!`);
       navigate('/admin');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Login failed');
@@ -67,13 +76,20 @@ const AdminLogin = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-[#1a1a1a] border border-[#3e3e3e] rounded-lg text-white placeholder-gray-500 focus:border-[#ff375f] focus:outline-none"
+                  className="w-full pl-10 pr-10 py-3 bg-[#1a1a1a] border border-[#3e3e3e] rounded-lg text-white placeholder-gray-500 focus:border-[#ff375f] focus:outline-none"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-400"
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
               </div>
             </div>
 

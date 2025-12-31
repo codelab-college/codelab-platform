@@ -1,8 +1,69 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { auth, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Use a default secret for development (should be set in production)
+const JWT_SECRET = process.env.JWT_SECRET || 'codelab-secret-key-change-in-production';
+
+// ==================== ADMIN LOGIN ====================
+
+// Admin login
+router.post('/login', async (req, res) => {
+  try {
+    const db = req.app.get('db');
+    const { usn, password } = req.body;
+
+    if (!usn || !password) {
+      return res.status(400).json({ message: 'USN and password are required' });
+    }
+
+    // Find admin user
+    const user = await db.get(
+      "SELECT * FROM users WHERE usn = ? AND role = 'admin'",
+      [usn]
+    );
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials or not an admin' });
+    }
+
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        id: user.id,
+        usn: user.usn,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        usn: user.usn,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Admin login error:', error);
+    res.status(500).json({ message: 'Login failed' });
+  }
+});
 
 // ==================== ADMIN DASHBOARD ====================
 
