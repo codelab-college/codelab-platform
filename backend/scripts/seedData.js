@@ -141,6 +141,121 @@ async function seedDatabase() {
       }
     }
 
+    // Add practice problems
+    const practiceProblems = [
+      {
+        title: 'Hello World',
+        description: 'Write a program that prints "Hello, World!" to the console.',
+        input_format: 'No input',
+        output_format: 'Print "Hello, World!"',
+        constraints: 'None',
+        difficulty: 'easy',
+        marks: 10,
+        tags: 'basics,output'
+      },
+      {
+        title: 'Sum of Two Numbers',
+        description: 'Given two integers, print their sum.',
+        input_format: 'Two space-separated integers a and b',
+        output_format: 'Sum of a and b',
+        constraints: '-1000 <= a, b <= 1000',
+        difficulty: 'easy',
+        marks: 10,
+        tags: 'basics,math'
+      },
+      {
+        title: 'Factorial',
+        description: 'Calculate the factorial of a given number n.',
+        input_format: 'A single integer n',
+        output_format: 'Factorial of n',
+        constraints: '0 <= n <= 12',
+        difficulty: 'easy',
+        marks: 15,
+        tags: 'math,loops'
+      },
+      {
+        title: 'Fibonacci Number',
+        description: 'Find the nth Fibonacci number.',
+        input_format: 'A single integer n',
+        output_format: 'The nth Fibonacci number',
+        constraints: '1 <= n <= 30',
+        difficulty: 'medium',
+        marks: 20,
+        tags: 'math,recursion,dynamic-programming'
+      },
+      {
+        title: 'Reverse String',
+        description: 'Given a string, reverse it and print the result.',
+        input_format: 'A single string s',
+        output_format: 'Reversed string',
+        constraints: '1 <= length(s) <= 1000',
+        difficulty: 'easy',
+        marks: 10,
+        tags: 'strings,basics'
+      },
+      {
+        title: 'Prime Check',
+        description: 'Determine if a given number is prime.',
+        input_format: 'A single integer n',
+        output_format: 'YES if prime, NO otherwise',
+        constraints: '2 <= n <= 10^6',
+        difficulty: 'medium',
+        marks: 20,
+        tags: 'math,number-theory'
+      }
+    ];
+
+    for (const problem of practiceProblems) {
+      const result = await db.run(
+        `INSERT INTO problems (assignment_id, title, description, input_format, output_format, constraints, difficulty, marks, is_practice, tags) 
+         VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
+        [problem.title, problem.description, problem.input_format, problem.output_format, 
+         problem.constraints, problem.difficulty, problem.marks, problem.tags]
+      );
+      const practiceId = result.lastID;
+
+      // Add test cases for practice problems
+      if (problem.title === 'Hello World') {
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 1, 0)`, [practiceId, '', 'Hello, World!']);
+      } else if (problem.title === 'Sum of Two Numbers') {
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 1, 0)`, [practiceId, '3 5', '8']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '-10 20', '10']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '0 0', '0']);
+      } else if (problem.title === 'Factorial') {
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 1, 0)`, [practiceId, '5', '120']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '0', '1']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '10', '3628800']);
+      } else if (problem.title === 'Fibonacci Number') {
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 1, 0)`, [practiceId, '10', '55']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '1', '1']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '20', '6765']);
+      } else if (problem.title === 'Reverse String') {
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 1, 0)`, [practiceId, 'hello', 'olleh']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, 'world', 'dlrow']);
+      } else if (problem.title === 'Prime Check') {
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 1, 0)`, [practiceId, '7', 'YES']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '4', 'NO']);
+        await db.run(`INSERT INTO test_cases (problem_id, input, expected_output, is_sample, is_hidden) VALUES (?, ?, ?, 0, 1)`, [practiceId, '997', 'YES']);
+      }
+    }
+
+    // Add badges
+    const badges = [
+      { name: 'First Steps', description: 'Solve your first problem', icon: '🎯', condition: JSON.stringify({ type: 'problems_solved', count: 1 }) },
+      { name: 'Getting Started', description: 'Solve 5 problems', icon: '⭐', condition: JSON.stringify({ type: 'problems_solved', count: 5 }) },
+      { name: 'Problem Solver', description: 'Solve 10 problems', icon: '🏆', condition: JSON.stringify({ type: 'problems_solved', count: 10 }) },
+      { name: 'Code Master', description: 'Solve 25 problems', icon: '👑', condition: JSON.stringify({ type: 'problems_solved', count: 25 }) },
+      { name: 'Persistent', description: 'Make 50 submissions', icon: '💪', condition: JSON.stringify({ type: 'submissions', count: 50 }) },
+      { name: 'Dedicated', description: 'Make 100 submissions', icon: '🔥', condition: JSON.stringify({ type: 'submissions', count: 100 }) }
+    ];
+
+    for (const badge of badges) {
+      await db.run(
+        `INSERT INTO badges (name, description, icon, condition) VALUES (?, ?, ?, ?)`,
+        [badge.name, badge.description, badge.icon, badge.condition]
+      );
+    }
+
     console.log('✅ Database seeded successfully!');
     console.log('\n📝 Sample Login Credentials:');
     console.log('Student: USN: 1MS21CS001, Password: password123');

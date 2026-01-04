@@ -149,7 +149,8 @@ router.post('/:id/run', auth, async (req, res) => {
       });
     }
 
-    res.json({ results });
+    const allPassed = results.every(r => r.passed);
+    res.json({ results, allPassed });
   } catch (error) {
     console.error('Practice run error:', error);
     res.status(500).json({ message: 'Failed to run code' });
@@ -197,11 +198,11 @@ router.post('/:id/submit', auth, async (req, res) => {
     const verdict = allPassed ? 'AC' : 'WA';
     const score = Math.round((passedCount / testCases.length) * problem.marks);
 
-    // Save submission (use 0 as assignment_id for practice problems since column is NOT NULL)
+    // Save submission (use NULL as assignment_id for practice problems)
     const submission = await db.run(`
       INSERT INTO submissions (student_id, problem_id, assignment_id, code, language, verdict, score, execution_time, test_cases_passed, total_test_cases, submitted_at)
-      VALUES (?, ?, 0, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
-    `, [userId, id, code, language, verdict, score, totalTime, passedCount, testCases.length]);
+      VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+    `, [userId, parseInt(id), code, language, verdict, score, totalTime, passedCount, testCases.length]);
 
     // Check for badge achievements
     await checkBadges(db, userId);

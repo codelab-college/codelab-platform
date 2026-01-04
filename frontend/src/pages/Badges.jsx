@@ -18,7 +18,7 @@ const Badges = () => {
   useEffect(() => {
     fetchBadges();
     fetchLeaderboard();
-    checkForNewBadges();
+    // checkForNewBadges(); // Disabled for now
   }, []);
 
   const fetchBadges = async () => {
@@ -73,15 +73,15 @@ const Badges = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <Trophy className="w-7 h-7 text-[#ffa116]" />
               Achievements
             </h1>
-            <p className="text-gray-400 mt-1">Collect badges and climb the leaderboard</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">Collect badges and climb the leaderboard</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="px-4 py-2 bg-[#282828] border border-[#3e3e3e] rounded-lg">
-              <span className="text-gray-400">Earned: </span>
+            <div className="px-4 py-2 bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-lg">
+              <span className="text-gray-500 dark:text-gray-400">Earned: </span>
               <span className="text-[#ffa116] font-bold">{earnedBadges.length}/{badges.length}</span>
             </div>
           </div>
@@ -93,8 +93,8 @@ const Badges = () => {
             <div className="flex items-center gap-3">
               <Sparkles className="w-6 h-6 text-[#ffa116]" />
               <div>
-                <p className="text-white font-semibold">New Badge Earned!</p>
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-900 dark:text-white font-semibold">New Badge Earned!</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
                   You earned: {newBadges.map(b => `${b.icon} ${b.name}`).join(', ')}
                 </p>
               </div>
@@ -103,13 +103,13 @@ const Badges = () => {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-2 border-b border-[#3e3e3e]">
+        <div className="flex gap-2 border-b border-gray-200 dark:border-[#3e3e3e]">
           <button
             onClick={() => setActiveTab('badges')}
             className={`px-4 py-3 font-medium transition-colors ${
               activeTab === 'badges'
                 ? 'text-[#ffa116] border-b-2 border-[#ffa116]'
-                : 'text-gray-400 hover:text-white'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             All Badges
@@ -119,7 +119,7 @@ const Badges = () => {
             className={`px-4 py-3 font-medium transition-colors ${
               activeTab === 'leaderboard'
                 ? 'text-[#ffa116] border-b-2 border-[#ffa116]'
-                : 'text-gray-400 hover:text-white'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             Leaderboard
@@ -131,7 +131,7 @@ const Badges = () => {
             {/* Earned Badges */}
             {earnedBadges.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-[#00b8a3]" />
                   Earned ({earnedBadges.length})
                 </h2>
@@ -139,14 +139,14 @@ const Badges = () => {
                   {earnedBadges.map((badge) => (
                     <div
                       key={badge.id}
-                      className="bg-[#282828] border border-[#00b8a3]/50 rounded-xl p-5 text-center relative overflow-hidden"
+                      className="bg-white dark:bg-[#282828] border border-[#00b8a3]/50 rounded-xl p-5 text-center relative overflow-hidden"
                     >
                       <div className="absolute top-2 right-2">
                         <CheckCircle className="w-4 h-4 text-[#00b8a3]" />
                       </div>
                       <div className="text-4xl mb-3">{badge.icon}</div>
-                      <h3 className="text-white font-semibold">{badge.name}</h3>
-                      <p className="text-gray-400 text-sm mt-1">{badge.description}</p>
+                      <h3 className="text-gray-900 dark:text-white font-semibold">{badge.name}</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{badge.description}</p>
                       {badge.earnedAt && (
                         <p className="text-[#00b8a3] text-xs mt-2">
                           Earned {new Date(badge.earnedAt).toLocaleDateString()}
@@ -161,7 +161,7 @@ const Badges = () => {
             {/* Locked Badges */}
             {lockedBadges.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <Lock className="w-5 h-5 text-gray-500" />
                   Locked ({lockedBadges.length})
                 </h2>
@@ -169,17 +169,17 @@ const Badges = () => {
                   {lockedBadges.map((badge) => (
                     <div
                       key={badge.id}
-                      className="bg-[#282828] border border-[#3e3e3e] rounded-xl p-5 text-center relative opacity-60"
+                      className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl p-5 text-center relative opacity-60"
                     >
                       <div className="absolute top-2 right-2">
                         <Lock className="w-4 h-4 text-gray-500" />
                       </div>
                       <div className="text-4xl mb-3 grayscale">{badge.icon}</div>
-                      <h3 className="text-white font-semibold">{badge.name}</h3>
-                      <p className="text-gray-400 text-sm mt-1">{badge.description}</p>
+                      <h3 className="text-gray-900 dark:text-white font-semibold">{badge.name}</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{badge.description}</p>
                       {/* Progress Bar */}
                       <div className="mt-3">
-                        <div className="h-1.5 bg-[#3e3e3e] rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-gray-200 dark:bg-[#3e3e3e] rounded-full overflow-hidden">
                           <div
                             className="h-full bg-[#ffa116] rounded-full transition-all"
                             style={{ width: `${Math.min(badge.progress, 100)}%` }}
@@ -195,28 +195,28 @@ const Badges = () => {
           </div>
         ) : (
           /* Leaderboard */
-          <div className="bg-[#282828] border border-[#3e3e3e] rounded-xl overflow-hidden">
+          <div className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-[#1a1a1a]">
+                <thead className="bg-gray-50 dark:bg-[#1a1a1a]">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Rank</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Student</th>
-                    <th className="px-4 py-3 text-center text-xs font-semibold text-gray-400 uppercase">Badges</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Collection</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Rank</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Student</th>
+                    <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Badges</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Collection</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#3e3e3e]">
+                <tbody className="divide-y divide-gray-200 dark:divide-[#3e3e3e]">
                   {leaderboard.length === 0 ? (
                     <tr>
                       <td colSpan="4" className="px-4 py-12 text-center">
-                        <Users className="w-12 h-12 mx-auto mb-3 text-gray-600" />
-                        <p className="text-gray-400">No rankings yet</p>
+                        <Users className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-600" />
+                        <p className="text-gray-500 dark:text-gray-400">No rankings yet</p>
                       </td>
                     </tr>
                   ) : (
                     leaderboard.map((entry, index) => (
-                      <tr key={entry.id} className="hover:bg-[#3e3e3e]/30">
+                      <tr key={entry.id} className="hover:bg-gray-50 dark:hover:bg-[#3e3e3e]/30">
                         <td className="px-4 py-4">
                           {index === 0 ? (
                             <div className="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center">
@@ -231,7 +231,7 @@ const Badges = () => {
                               <Medal className="w-4 h-4 text-amber-500" />
                             </div>
                           ) : (
-                            <span className="w-8 h-8 flex items-center justify-center text-gray-400 font-bold">
+                            <span className="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 font-bold">
                               {index + 1}
                             </span>
                           )}
@@ -244,7 +244,7 @@ const Badges = () => {
                               </span>
                             </div>
                             <div>
-                              <p className="text-white font-medium">{entry.name}</p>
+                              <p className="text-gray-900 dark:text-white font-medium">{entry.name}</p>
                               <p className="text-gray-500 text-xs">{entry.usn}</p>
                             </div>
                           </div>

@@ -62,11 +62,11 @@ const Contests = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <Trophy className="w-7 h-7 text-[#ffc01e]" />
               Contests
             </h1>
-            <p className="text-gray-400 mt-1">Participate in coding contests and compete with others</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">Participate in coding contests and compete with others</p>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ const Contests = () => {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                 filter === btn.id
                   ? 'bg-[#ffa116] text-black'
-                  : 'bg-[#282828] text-gray-400 hover:text-white hover:bg-[#3e3e3e] border border-[#3e3e3e]'
+                  : 'bg-white dark:bg-[#282828] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#3e3e3e] border border-gray-200 dark:border-[#3e3e3e]'
               }`}
             >
               {btn.label}
@@ -89,10 +89,10 @@ const Contests = () => {
 
         {/* Contests List */}
         {filteredContests.length === 0 ? (
-          <div className="bg-[#282828] border border-[#3e3e3e] rounded-xl p-12 text-center">
-            <Trophy className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-white mb-2">No contests available</h3>
-            <p className="text-gray-400">Check back later for upcoming contests</p>
+          <div className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl p-12 text-center">
+            <Trophy className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No contests available</h3>
+            <p className="text-gray-500 dark:text-gray-400">Check back later for upcoming contests</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -103,7 +103,7 @@ const Contests = () => {
                   <div className="w-2 h-2 bg-[#00b8a3] rounded-full animate-pulse"></div>
                   <span className="text-[#00b8a3] font-medium">Live Contests</span>
                 </div>
-                <p className="text-gray-400 text-sm">Active contests are happening now. Join before they end!</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">Active contests are happening now. Join before they end!</p>
               </div>
             )}
 
@@ -118,10 +118,10 @@ const Contests = () => {
                   <Link
                     key={contest.id}
                     to={`/contests/${contest.id}`}
-                    className={`bg-[#282828] border rounded-xl p-5 hover:bg-[#2d2d2d] transition-all group ${
+                    className={`bg-white dark:bg-[#282828] border rounded-xl p-5 hover:bg-gray-50 dark:hover:bg-[#2d2d2d] transition-all group ${
                       contest.status === 'active' 
                         ? 'border-[#00b8a3]/50 hover:border-[#00b8a3]' 
-                        : 'border-[#3e3e3e] hover:border-[#4a4a4a]'
+                        : 'border-gray-200 dark:border-[#3e3e3e] hover:border-gray-300 dark:hover:border-[#4a4a4a]'
                     }`}
                   >
                     {/* Status Badge */}
@@ -139,38 +139,38 @@ const Contests = () => {
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-semibold text-white text-lg mb-2 group-hover:text-[#ffa116] transition-colors line-clamp-1">
+                    <h3 className="font-semibold text-gray-900 dark:text-white text-lg mb-2 group-hover:text-[#ffa116] transition-colors line-clamp-1">
                       {contest.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2">
                       {contest.description || 'No description provided'}
                     </p>
 
                     {/* Stats */}
                     <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="bg-[#1a1a1a] rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold text-white mb-1">
+                      <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-3 text-center">
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                           {contest.problem_count}
                         </div>
-                        <div className="text-xs text-gray-400">Problems</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Problems</div>
                       </div>
-                      <div className="bg-[#1a1a1a] rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold text-white mb-1">
+                      <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-3 text-center">
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                           {contest.duration_minutes}
                         </div>
-                        <div className="text-xs text-gray-400">Minutes</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Minutes</div>
                       </div>
                     </div>
 
                     {/* Time Info */}
-                    <div className="space-y-2 text-sm border-t border-[#3e3e3e] pt-4">
-                      <div className="flex items-center text-gray-400">
+                    <div className="space-y-2 text-sm border-t border-gray-200 dark:border-[#3e3e3e] pt-4">
+                      <div className="flex items-center text-gray-500 dark:text-gray-400">
                         <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span>Start: {startDate.toLocaleString()}</span>
                       </div>
-                      <div className="flex items-center text-gray-400">
+                      <div className="flex items-center text-gray-500 dark:text-gray-400">
                         <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span>End: {endDate.toLocaleString()}</span>
                       </div>
@@ -189,12 +189,12 @@ const Contests = () => {
         )}
 
         {/* Info Section */}
-        <div className="bg-[#282828] border border-[#3e3e3e] rounded-xl p-6 mt-8">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl p-6 mt-8">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <FileText className="w-5 h-5 text-[#ffa116]" />
             Contest Rules
           </h3>
-          <ul className="space-y-3 text-gray-400 text-sm">
+          <ul className="space-y-3 text-gray-500 dark:text-gray-400 text-sm">
             <li className="flex items-start gap-2">
               <span className="text-[#ffa116]">•</span>
               Contests have a fixed duration. Complete as many problems as possible within the time limit.

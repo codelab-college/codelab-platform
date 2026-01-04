@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
 import { Shield, Lock, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -18,11 +17,14 @@ const AdminLogin = () => {
 
     try {
       // Use dedicated admin login endpoint
+      console.log('Attempting admin login with:', usn);
       const response = await axios.post('/api/admin/login', { usn, password });
+      console.log('Admin login response:', response.data);
       const { token, user } = response.data;
 
       if (user.role !== 'admin') {
         toast.error('Access denied. Admin only.');
+        setLoading(false);
         return;
       }
 
@@ -33,6 +35,7 @@ const AdminLogin = () => {
       toast.success(`Welcome, ${user.name}!`);
       navigate('/admin');
     } catch (error) {
+      console.error('Admin login error:', error);
       toast.error(error.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);

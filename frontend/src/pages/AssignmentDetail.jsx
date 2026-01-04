@@ -84,18 +84,18 @@ const AssignmentDetail = () => {
         {/* Back Button */}
         <Link
           to="/assignments"
-          className="inline-flex items-center text-gray-400 hover:text-white transition-colors"
+          className="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Assignments
         </Link>
 
         {/* Assignment Header */}
-        <div className="bg-[#282828] border border-[#3e3e3e] rounded-xl p-6">
+        <div className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl p-6">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <h1 className="text-2xl font-bold text-white">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                   {assignment.title}
                 </h1>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${statusBadge.class}`}>
@@ -103,42 +103,42 @@ const AssignmentDetail = () => {
                 </span>
               </div>
               
-              <p className="text-gray-400 mb-6">{assignment.description}</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">{assignment.description}</p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-[#1a1a1a] rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-400 mb-1">
+                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-4">
+                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
                     <User className="w-4 h-4" />
                     <span className="text-xs">Instructor</span>
                   </div>
-                  <p className="text-white font-medium">{assignment.teacher_name}</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{assignment.teacher_name}</p>
                 </div>
 
-                <div className="bg-[#1a1a1a] rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-400 mb-1">
+                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-4">
+                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
                     <FileText className="w-4 h-4" />
                     <span className="text-xs">Problems</span>
                   </div>
-                  <p className="text-white font-medium">{problems.length} Problems</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{problems.length} Problems</p>
                 </div>
 
-                <div className="bg-[#1a1a1a] rounded-lg p-4">
-                  <div className={`flex items-center gap-2 mb-1 ${isOverdue ? 'text-[#ff375f]' : 'text-gray-400'}`}>
+                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-4">
+                  <div className={`flex items-center gap-2 mb-1 ${isOverdue ? 'text-[#ff375f]' : 'text-gray-500 dark:text-gray-400'}`}>
                     <Calendar className="w-4 h-4" />
                     <span className="text-xs">Due Date</span>
                   </div>
-                  <p className={`font-medium ${isOverdue ? 'text-[#ff375f]' : 'text-white'}`}>
+                  <p className={`font-medium ${isOverdue ? 'text-[#ff375f]' : 'text-gray-900 dark:text-white'}`}>
                     {dueDate.toLocaleDateString()}
                     {isOverdue && ' (Overdue)'}
                   </p>
                 </div>
 
-                <div className="bg-[#1a1a1a] rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-400 mb-1">
+                <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-4">
+                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-1">
                     <Award className="w-4 h-4" />
                     <span className="text-xs">Total Marks</span>
                   </div>
-                  <p className="text-white font-medium">{assignment.total_marks} Points</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{assignment.total_marks} Points</p>
                 </div>
               </div>
 
@@ -163,8 +163,8 @@ const AssignmentDetail = () => {
               ) : (
                 <div>
                   {assignment.score !== null && (
-                    <div className="bg-[#1a1a1a] rounded-lg p-4 inline-block">
-                      <p className="text-gray-400 text-sm mb-1">Your Score</p>
+                    <div className="bg-gray-50 dark:bg-[#1a1a1a] rounded-lg p-4 inline-block">
+                      <p className="text-gray-500 dark:text-gray-400 text-sm mb-1">Your Score</p>
                       <p className="text-3xl font-bold text-[#ffa116]">
                         {assignment.score}<span className="text-gray-500">/{assignment.total_marks}</span>
                       </p>
@@ -182,7 +182,7 @@ const AssignmentDetail = () => {
             <Shield className="w-5 h-5 text-[#ffa116] flex-shrink-0 mt-0.5" />
             <div>
               <h3 className="text-[#ffa116] font-medium mb-1">Secure Exam Environment</h3>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
                 When you click on a problem, you'll be asked to enable camera and microphone for proctoring.
                 The exam will run in fullscreen mode. Tab switching and window changes will be recorded as violations.
               </p>
@@ -191,34 +191,34 @@ const AssignmentDetail = () => {
         </div>
 
         {/* Problems List */}
-        <div className="bg-[#282828] border border-[#3e3e3e] rounded-xl overflow-hidden">
-          <div className="p-4 border-b border-[#3e3e3e] flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+        <div className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl overflow-hidden">
+          <div className="p-4 border-b border-gray-200 dark:border-[#3e3e3e] flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <FileText className="w-5 h-5 text-[#ffa116]" />
               Problems
             </h2>
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               {problems.filter(p => p.is_solved).length}/{problems.length} Solved
             </span>
           </div>
 
-          <div className="divide-y divide-[#3e3e3e]">
+          <div className="divide-y divide-gray-200 dark:divide-[#3e3e3e]">
             {problems.map((problem, index) => {
               const isLocked = assignment.student_status === 'not_started';
               
               return (
                 <div
                   key={problem.id}
-                  className={`relative ${!isLocked ? 'hover:bg-[#3e3e3e]/50' : ''} transition-colors`}
+                  className={`relative ${!isLocked ? 'hover:bg-gray-50 dark:hover:bg-[#3e3e3e]/50' : ''} transition-colors`}
                 >
                   {isLocked ? (
                     <div className="p-5 flex items-center justify-between opacity-60">
                       <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 bg-[#3e3e3e] rounded-lg flex items-center justify-center">
+                        <div className="w-8 h-8 bg-gray-100 dark:bg-[#3e3e3e] rounded-lg flex items-center justify-center">
                           <Lock className="w-4 h-4 text-gray-500" />
                         </div>
                         <div>
-                          <h3 className="text-white font-medium">
+                          <h3 className="text-gray-900 dark:text-white font-medium">
                             {index + 1}. {problem.title}
                           </h3>
                           <div className="flex items-center gap-3 mt-1">
@@ -226,7 +226,7 @@ const AssignmentDetail = () => {
                               {problem.difficulty?.charAt(0).toUpperCase() + problem.difficulty?.slice(1)}
                             </span>
                             <span className="text-sm text-gray-500">•</span>
-                            <span className="text-sm text-gray-400">{problem.marks} marks</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{problem.marks} marks</span>
                           </div>
                         </div>
                       </div>
@@ -241,16 +241,16 @@ const AssignmentDetail = () => {
                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                           problem.is_solved 
                             ? 'bg-[#00b8a3]/20' 
-                            : 'bg-[#3e3e3e]'
+                            : 'bg-gray-100 dark:bg-[#3e3e3e]'
                         }`}>
                           {problem.is_solved ? (
                             <CheckCircle className="w-4 h-4 text-[#00b8a3]" />
                           ) : (
-                            <span className="text-sm font-medium text-gray-400">{index + 1}</span>
+                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{index + 1}</span>
                           )}
                         </div>
                         <div>
-                          <h3 className="text-white font-medium hover:text-[#ffa116] transition-colors">
+                          <h3 className="text-gray-900 dark:text-white font-medium hover:text-[#ffa116] transition-colors">
                             {index + 1}. {problem.title}
                           </h3>
                           <div className="flex items-center gap-3 mt-1">
@@ -258,7 +258,7 @@ const AssignmentDetail = () => {
                               {problem.difficulty?.charAt(0).toUpperCase() + problem.difficulty?.slice(1)}
                             </span>
                             <span className="text-sm text-gray-500">•</span>
-                            <span className="text-sm text-gray-400">{problem.marks} marks</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{problem.marks} marks</span>
                           </div>
                         </div>
                       </div>
@@ -283,7 +283,7 @@ const AssignmentDetail = () => {
               <AlertTriangle className="w-5 h-5 text-[#ff375f] flex-shrink-0 mt-0.5" />
               <div>
                 <h3 className="text-[#ff375f] font-medium mb-1">Important</h3>
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
                   Make sure you have a stable internet connection. Your progress is automatically saved.
                   Complete all problems before the due date to get full marks.
                 </p>

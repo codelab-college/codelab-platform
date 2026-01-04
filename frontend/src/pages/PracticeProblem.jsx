@@ -138,15 +138,17 @@ public class Solution {
       const response = await practiceApi.submitPracticeCode(id, { code, language });
       setResults(response.data);
       
-      if (response.data.verdict === 'Accepted') {
+      if (response.data.verdict === 'AC' || response.data.verdict === 'Accepted') {
         toast.success('🎉 Problem solved! Great job!');
-        // Check for new badges
-        const badgeResponse = await practiceApi.checkBadges();
-        if (badgeResponse.data.newBadges?.length > 0) {
-          badgeResponse.data.newBadges.forEach(badge => {
-            toast.success(`🏆 New badge: ${badge.name}!`, { duration: 5000 });
-          });
-        }
+        // Badges check disabled for now
+        // try {
+        //   const badgeResponse = await practiceApi.checkBadges();
+        //   if (badgeResponse.data.newBadges?.length > 0) {
+        //     badgeResponse.data.newBadges.forEach(badge => {
+        //       toast.success(`🏆 New badge: ${badge.name}!`, { duration: 5000 });
+        //     });
+        //   }
+        // } catch (e) { console.log('Badge check skipped'); }
       } else {
         toast.error(`Verdict: ${response.data.verdict}`);
       }

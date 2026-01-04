@@ -62,11 +62,11 @@ const Assignments = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <BookOpen className="w-7 h-7 text-[#ffa116]" />
               Assignments
             </h1>
-            <p className="text-gray-400 mt-1">View and complete your coding assignments</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">View and complete your coding assignments</p>
           </div>
         </div>
 
@@ -80,12 +80,12 @@ const Assignments = () => {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2 ${
                 filter === btn.id
                   ? 'bg-[#ffa116] text-black'
-                  : 'bg-[#282828] text-gray-400 hover:text-white hover:bg-[#3e3e3e] border border-[#3e3e3e]'
+                  : 'bg-white dark:bg-[#282828] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#3e3e3e] border border-gray-200 dark:border-[#3e3e3e]'
               }`}
             >
               {btn.label}
               <span className={`px-1.5 py-0.5 rounded text-xs ${
-                filter === btn.id ? 'bg-black/20' : 'bg-[#3e3e3e]'
+                filter === btn.id ? 'bg-black/20' : 'bg-gray-100 dark:bg-[#3e3e3e]'
               }`}>
                 {btn.count}
               </span>
@@ -95,10 +95,10 @@ const Assignments = () => {
 
         {/* Assignments List */}
         {filteredAssignments.length === 0 ? (
-          <div className="bg-[#282828] border border-[#3e3e3e] rounded-xl p-12 text-center">
-            <FileText className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-white mb-2">No assignments found</h3>
-            <p className="text-gray-400">
+          <div className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl p-12 text-center">
+            <FileText className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No assignments found</h3>
+            <p className="text-gray-500 dark:text-gray-400">
               {filter === 'all'
                 ? 'No assignments available at the moment'
                 : `No assignments with status "${filter.replace('_', ' ')}"`}
@@ -116,10 +116,10 @@ const Assignments = () => {
                 <Link
                   key={assignment.id}
                   to={`/assignments/${assignment.id}`}
-                  className="bg-[#282828] border border-[#3e3e3e] rounded-xl p-5 hover:border-[#4a4a4a] hover:bg-[#2d2d2d] transition-all group"
+                  className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-xl p-5 hover:border-gray-300 dark:hover:border-[#4a4a4a] hover:bg-gray-50 dark:hover:bg-[#2d2d2d] transition-all group"
                 >
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-semibold text-white group-hover:text-[#ffa116] transition-colors line-clamp-1 flex-1 pr-2">
+                    <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-[#ffa116] transition-colors line-clamp-1 flex-1 pr-2">
                       {assignment.title}
                     </h3>
                     <span className={`px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0 ${statusBadge.class}`}>
@@ -127,22 +127,22 @@ const Assignments = () => {
                     </span>
                   </div>
 
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2">
                     {assignment.description || 'No description provided'}
                   </p>
 
                   <div className="space-y-2 text-sm">
-                    <div className="flex items-center text-gray-400">
+                    <div className="flex items-center text-gray-500 dark:text-gray-400">
                       <User className="w-4 h-4 mr-2 flex-shrink-0" />
                       <span className="truncate">{assignment.teacher_name}</span>
                     </div>
 
-                    <div className="flex items-center text-gray-400">
+                    <div className="flex items-center text-gray-500 dark:text-gray-400">
                       <FileText className="w-4 h-4 mr-2 flex-shrink-0" />
                       <span>{assignment.problem_count} problems</span>
                     </div>
 
-                    <div className={`flex items-center ${isOverdue ? 'text-[#ff375f]' : 'text-gray-400'}`}>
+                    <div className={`flex items-center ${isOverdue ? 'text-[#ff375f]' : 'text-gray-500 dark:text-gray-400'}`}>
                       <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
                       <span>
                         Due: {dueDate.toLocaleDateString()}
@@ -151,7 +151,7 @@ const Assignments = () => {
                     </div>
 
                     {assignment.is_timed && (
-                      <div className="flex items-center text-gray-400">
+                      <div className="flex items-center text-gray-500 dark:text-gray-400">
                         <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span>Timed: {assignment.duration_minutes} minutes</span>
                       </div>
@@ -159,8 +159,8 @@ const Assignments = () => {
                   </div>
 
                   {assignment.score !== null && (
-                    <div className="mt-4 pt-4 border-t border-[#3e3e3e] flex items-center justify-between">
-                      <span className="text-sm text-gray-400">Score</span>
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-[#3e3e3e] flex items-center justify-between">
+                      <span className="text-sm text-gray-500 dark:text-gray-400">Score</span>
                       <span className="text-xl font-bold text-[#ffa116]">
                         {assignment.score}/{assignment.total_marks}
                       </span>

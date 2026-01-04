@@ -61,6 +61,9 @@ class Database {
         duration_minutes INTEGER,
         total_marks INTEGER DEFAULT 100,
         status VARCHAR(20) DEFAULT 'active',
+        access_type VARCHAR(20) DEFAULT 'all',
+        selected_students TEXT,
+        is_hidden BOOLEAN DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (teacher_id) REFERENCES users(id)
@@ -71,7 +74,7 @@ class Database {
     await this.run(`
       CREATE TABLE IF NOT EXISTS problems (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        assignment_id INTEGER NOT NULL,
+        assignment_id INTEGER,
         title VARCHAR(200) NOT NULL,
         description TEXT NOT NULL,
         input_format TEXT,
@@ -82,6 +85,8 @@ class Database {
         time_limit INTEGER DEFAULT 1000,
         memory_limit INTEGER DEFAULT 256,
         order_index INTEGER DEFAULT 0,
+        is_practice BOOLEAN DEFAULT 0,
+        tags TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE
       )
@@ -108,7 +113,7 @@ class Database {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         student_id INTEGER NOT NULL,
         problem_id INTEGER NOT NULL,
-        assignment_id INTEGER NOT NULL,
+        assignment_id INTEGER,
         code TEXT NOT NULL,
         language VARCHAR(20) NOT NULL,
         verdict VARCHAR(20),
@@ -201,6 +206,46 @@ class Database {
         link VARCHAR(255),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `);
+
+    // Saved code table (for practice problems)
+    await this.run(`
+      CREATE TABLE IF NOT EXISTS saved_code (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        problem_id INTEGER NOT NULL,
+        code TEXT NOT NULL,
+        language VARCHAR(20) NOT NULL,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, problem_id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (problem_id) REFERENCES problems(id)
+      )
+    `);
+
+    // Badges table
+    await this.run(`
+      CREATE TABLE IF NOT EXISTS badges (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name VARCHAR(100) NOT NULL,
+        description TEXT,
+        icon VARCHAR(50),
+        condition TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // User badges table
+    await this.run(`
+      CREATE TABLE IF NOT EXISTS user_badges (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        badge_id INTEGER NOT NULL,
+        earned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, badge_id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (badge_id) REFERENCES badges(id)
       )
     `);
 
