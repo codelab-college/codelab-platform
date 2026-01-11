@@ -22,7 +22,7 @@ router.get('/dashboard', auth, teacherOnly, async (req, res) => {
     const activeAssignments = await db.get(`
       SELECT COUNT(*) as count 
       FROM assignments 
-      WHERE teacher_id = ? AND status = 'active' AND is_closed = 0
+      WHERE teacher_id = ? AND status = 'active'
     `, [teacherId]);
 
     // Get total problems
