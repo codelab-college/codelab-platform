@@ -1,8 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { copyFileSync } from 'fs'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'copy-redirects',
+      closeBundle() {
+        try {
+          copyFileSync('public/_redirects', 'dist/_redirects')
+          console.log('✅ Copied _redirects to dist/')
+        } catch (e) {
+          console.warn('⚠️ Could not copy _redirects:', e.message)
+        }
+      }
+    }
+  ],
   publicDir: 'public',
   server: {
     port: 3000,
