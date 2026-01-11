@@ -48,7 +48,15 @@ await db.initialize();
 
 // Middleware
 app.use(helmet()); // Security headers
-app.use(cors()); // CORS
+
+// CORS configuration
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions)); // CORS
+
 app.use(compression()); // Compress responses
 app.use(express.json({ limit: '10mb' })); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true }));
