@@ -20,7 +20,17 @@ const Login = () => {
     const success = await login(usn, password);
     
     if (success) {
-      navigate('/');
+      // Get user from localStorage to check role
+      const user = JSON.parse(localStorage.getItem('user'));
+      
+      // Redirect based on role
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else if (user.role === 'teacher') {
+        navigate('/teacher');
+      } else {
+        navigate('/');
+      }
     }
     
     setLoading(false);
@@ -55,12 +65,12 @@ const Login = () => {
 
         {/* Login Form */}
         <div className="bg-white dark:bg-[#282828] border border-gray-200 dark:border-[#3e3e3e] rounded-2xl p-8 shadow-xl">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Student Login</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Sign In</h2>
           
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="usn" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                USN / Roll Number
+                USN / ID
               </label>
               <input
                 id="usn"

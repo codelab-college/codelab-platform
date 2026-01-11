@@ -18,7 +18,6 @@ import Badges from './pages/Badges';
 import Leaderboard from './pages/Leaderboard';
 
 // Teacher Pages
-import TeacherLogin from './pages/teacher/TeacherLogin';
 import TeacherLayout from './components/TeacherLayout';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import AssignmentsList from './pages/teacher/AssignmentsList';
@@ -29,7 +28,6 @@ import StudentSearch from './pages/teacher/StudentSearch';
 import Layout from './components/Layout';
 
 // Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './components/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TeacherManagement from './pages/admin/TeacherManagement';
@@ -46,7 +44,10 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
-            <Route path="/teacher/login" element={<TeacherLogin />} />
+            
+            {/* Redirect old login pages to main login */}
+            <Route path="/teacher/login" element={<Navigate to="/login" replace />} />
+            <Route path="/admin/login" element={<Navigate to="/login" replace />} />
 
             {/* Teacher routes */}
             <Route
@@ -141,7 +142,6 @@ function App() {
             />
 
             {/* Admin routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
             <Route
               path="/admin"
               element={
