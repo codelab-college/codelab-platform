@@ -68,7 +68,6 @@ router.get('/dashboard', auth, teacherOnly, async (req, res) => {
         a.title,
         a.due_date,
         a.status,
-        a.is_closed,
         COUNT(DISTINCT sa.student_id) as students_submitted,
         COUNT(DISTINCT CASE WHEN sa.status = 'completed' THEN sa.student_id END) as students_completed,
         AVG(sa.score) as average_score
@@ -227,7 +226,6 @@ router.put('/assignments/:id', auth, teacherOnly, async (req, res) => {
       status,
       detect_violations,
       is_hidden,
-      is_closed,
       allowed_languages,
       access_type,
       selected_students
@@ -254,7 +252,6 @@ router.put('/assignments/:id', auth, teacherOnly, async (req, res) => {
         status = COALESCE(?, status),
         detect_violations = COALESCE(?, detect_violations),
         is_hidden = COALESCE(?, is_hidden),
-        is_closed = COALESCE(?, is_closed),
         allowed_languages = COALESCE(?, allowed_languages),
         access_type = COALESCE(?, access_type),
         selected_students = ?,
@@ -270,7 +267,6 @@ router.put('/assignments/:id', auth, teacherOnly, async (req, res) => {
       status,
       detect_violations,
       is_hidden,
-      is_closed,
       allowed_languages,
       access_type,
       selected_students !== undefined ? selected_students : null,

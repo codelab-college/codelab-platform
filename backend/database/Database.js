@@ -64,6 +64,7 @@ class Database {
         access_type VARCHAR(20) DEFAULT 'all',
         selected_students TEXT,
         is_hidden BOOLEAN DEFAULT 0,
+        is_closed BOOLEAN DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (teacher_id) REFERENCES users(id)
